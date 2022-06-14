@@ -1,5 +1,11 @@
-﻿namespace UC10_EmployeeWageProblem
+﻿namespace UC10_EmployeeWage
 {
+    public interface IComputeEmpWage
+    {
+        public void addCompanyEmpWage(string company, int emp_Rate_Per_Hr, int no_Of_Working_Days, int max_Hrs_Per_Month);
+        public void computeEmpWage();
+        public int getTotalWage(string company);
+    }
     public class CompanyEmpWage
     {
         public string company;
@@ -11,6 +17,7 @@
             this.emp_Rate_Per_Hr = emp_Rate_Per_Hr;
             this.no_Of_Working_Days = no_Of_Working_Days;
             this.max_Hrs_Per_Month = max_Hrs_Per_Month;
+            this.total_Emp_Wage = 0;
         }
 
         public void setTotalEmpWage(int total_Emp_Wage)
@@ -24,28 +31,35 @@
         }
     }
 
-    public class EmpWageBuilderArray
+    public class EmpWageBuilder : IComputeEmpWage
     {
-        public const int is_Part_Time = 1, is_Full_Time = 2;
-        private int no_Of_Company = 0;
-        private CompanyEmpWage[] companyEmpWageArray;
+        public const int is_Part_Time = 1;
+        public const int is_Full_Time = 2;
 
-        public EmpWageBuilderArray()
+        private LinkedList<CompanyEmpWage> companyEmpWageList;
+        private Dictionary<string, CompanyEmpWage> companyEmpWageMap;
+
+
+
+
+        public EmpWageBuilder()
         {
-            this.companyEmpWageArray = new CompanyEmpWage[5];
+            this.companyEmpWageList = new LinkedList<CompanyEmpWage>();
+            this.companyEmpWageMap = new Dictionary<string, CompanyEmpWage>();
         }
 
         public void addCompanyEmpWage(string company, int emp_Rate_Per_Hr, int no_Of_Working_Days, int max_Hrs_Per_Month)
         {
-            companyEmpWageArray[this.no_Of_Company] = new CompanyEmpWage(company, emp_Rate_Per_Hr, no_Of_Working_Days, max_Hrs_Per_Month);
-            no_Of_Company++;
+            CompanyEmpWage companyEmpWage = new CompanyEmpWage(company, emp_Rate_Per_Hr, no_Of_Working_Days, max_Hrs_Per_Month);
+            this.companyEmpWageList.AddLast(companyEmpWage);
+            this.companyEmpWageMap.Add(company, companyEmpWage);
         }
         public void computeEmpWage()
         {
-            for (int i = 0; i < no_Of_Company; i++)
+            foreach (CompanyEmpWage companyEmpWage in this.companyEmpWageList)
             {
-                companyEmpWageArray[i].setTotalEmpWage(this.computeEmpWage(this.companyEmpWageArray[i]));
-                Console.WriteLine(this.companyEmpWageArray[i].ToString());
+                companyEmpWage.setTotalEmpWage(this.computeEmpWage(companyEmpWage));
+                Console.WriteLine(companyEmpWage.ToString());
             }
         }
 
@@ -77,16 +91,24 @@
             }
             return totalEmpHrs * companyEmpWage.emp_Rate_Per_Hr;
         }
+        public int getTotalWage(string company)
+        {
+            return this.companyEmpWageMap[company].total_Emp_Wage;
+
+        }
     }
 
     public class program
     {
         public static void Main(string[] args)
         {
-            EmpWageBuilderArray empWageBuilderArray = new EmpWageBuilderArray();
-            empWageBuilderArray.addCompanyEmpWage("Dmart", 20, 2, 10);
-            empWageBuilderArray.addCompanyEmpWage("Reliance", 10, 4, 20);
-            empWageBuilderArray.computeEmpWage();
+            EmpWageBuilder empWageBuilder = new EmpWageBuilder();
+            empWageBuilder.addCompanyEmpWage("Dmart", 20, 2, 10);
+            empWageBuilder.addCompanyEmpWage("Reliance", 10, 4, 20);
+            empWageBuilder.computeEmpWage();
+            Console.WriteLine("Total Emp Wage for Dmart Company :" + empWageBuilder.getTotalWage("Dmart"));
+
+
         }
     }
 }
