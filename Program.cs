@@ -64,9 +64,9 @@ namespace EmployeeWageComputation
 
         public int computeEmpWage(CompanyEmpWage companyEmpWage)
         {
-            ///variables
+            //variables
             int empHrs = 0, totalEmpHrs = 0, totalWorkingDays = 0;
-            ///Computation
+            //Computation
             while (totalEmpHrs <= companyEmpWage.max_Hrs_Per_Month && totalWorkingDays < companyEmpWage.no_Of_Working_Days)
             {
                 totalWorkingDays++;
