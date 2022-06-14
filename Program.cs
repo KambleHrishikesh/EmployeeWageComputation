@@ -1,4 +1,5 @@
-﻿namespace UC12_EmployeeWage
+﻿using System.Collections.Generic;
+namespace EmployeeWageComputation
 {
     public interface IComputeEmpWage
     {
