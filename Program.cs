@@ -1,4 +1,4 @@
-﻿namespace UC10_EmployeeWage
+﻿namespace UC12_EmployeeWage
 {
     public interface IComputeEmpWage
     {
@@ -33,12 +33,10 @@
 
     public class EmpWageBuilder : IComputeEmpWage
     {
-        public const int is_Part_Time = 1;
-        public const int is_Full_Time = 2;
+        public const int is_Part_Time = 1, is_Full_Time = 2;
 
         private LinkedList<CompanyEmpWage> companyEmpWageList;
         private Dictionary<string, CompanyEmpWage> companyEmpWageMap;
-
 
 
 
@@ -107,6 +105,7 @@
             empWageBuilder.addCompanyEmpWage("Reliance", 10, 4, 20);
             empWageBuilder.computeEmpWage();
             Console.WriteLine("Total Emp Wage for Dmart Company :" + empWageBuilder.getTotalWage("Dmart"));
+            Console.WriteLine("Total Emp Wage for Reliance Company :" + empWageBuilder.getTotalWage("Reliance"));
 
 
         }
